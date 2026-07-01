@@ -1,0 +1,12 @@
+# backend/ and frontend/ each have their own .gitignore (Maven/Node
+# specifics). This root file only covers things outside those folders.
+
+.DS_Store
+.idea/
+.vscode/
+*.iml
+
+# Secrets (introduced starting Module 10/12) - never commit real credentials.
+.env
+.env.*
+!.env.example

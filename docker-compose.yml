@@ -1,0 +1,58 @@
+# Runs the whole Task Tracker stack: a Postgres database, the Spring Boot
+# backend, and the Angular frontend. This is the standard way to run
+# everything throughout the curriculum:
+#
+#   docker compose up --build
+#
+# The credentials below are hardcoded and intentionally simple - that's fine
+# for a local learning project, but never do this for anything real. Module
+# 12 covers using environment variables/secrets properly.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: tasktracker
+      POSTGRES_USER: tasktracker
+      POSTGRES_PASSWORD: tasktracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tasktracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    volumes:
+      # Bind-mount source code so DevTools picks up edits made on your host
+      # machine and restarts the app automatically.
+      - ./backend:/app
+      # Anonymous volumes so the container's own Maven download cache and
+      # build output aren't hidden by the bind mount above.
+      - /root/.m2
+      - /app/target
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "4200:4200"
+    volumes:
+      # Bind-mount source code so ng serve picks up edits made on your host
+      # machine and live-reloads the browser automatically.
+      - ./frontend:/app
+      # Anonymous volume so the container's own node_modules (installed for
+      # its own OS/architecture) isn't hidden by the bind mount above.
+      - /app/node_modules
+    depends_on:
+      - backend
+
+volumes:
+  db-data:

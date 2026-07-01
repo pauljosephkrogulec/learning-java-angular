@@ -1,0 +1,51 @@
+# This file configures how the Spring Boot app connects to a database.
+#
+# A Spring "profile" is just a named group of settings you can switch between.
+# We define two profiles below: "h2" (a fast in-memory database, no setup
+# required) and "postgres" (a real database, running in Docker via
+# docker-compose.yml). The "active" profile picked here decides which one
+# actually gets used when the app starts.
+#
+# Module 1-3 exercises don't touch a database at all, so it doesn't matter
+# which profile is active yet. Starting Module 4, we connect real JPA
+# repositories to Postgres, so "postgres" is the default from day one since
+# docker-compose already runs Postgres alongside the app.
+spring:
+  profiles:
+    active: postgres
+
+---
+# H2 profile: an in-memory database that resets every time the app restarts.
+# Useful for quick experiments or automated tests where you don't want to
+# depend on Postgres being up. Try it with:
+#   ./mvnw spring-boot:run -Dspring-boot.run.profiles=h2
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:mem:tasktracker
+  jpa:
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+---
+# Postgres profile: connects to the "db" service defined in the root
+# docker-compose.yml. The hostname "db" only resolves when this app is
+# itself running inside that same docker-compose network (see
+# backend/Dockerfile and docker-compose.yml).
+spring:
+  config:
+    activate:
+      on-profile: postgres
+  datasource:
+    url: jdbc:postgresql://db:5432/tasktracker
+    username: tasktracker
+    password: tasktracker
+  jpa:
+    hibernate:
+      ddl-auto: update
