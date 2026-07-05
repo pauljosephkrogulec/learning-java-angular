@@ -9,8 +9,11 @@ time around a single example app: **Task Tracker**.
 - **Docker** (Docker Desktop on Mac/Windows, Docker Engine + Compose plugin
   on Linux) — required, everything runs in containers.
 - **JDK 21** and **Node.js LTS** — optional, but recommended so your editor
-  can give you autocomplete/error-checking (IntelliJ IDEA for `backend/`,
-  VS Code for `frontend/`).
+  can give you autocomplete/error-checking.
+- **VS Code** — open the repo root folder in VS Code and accept the
+  "Install recommended extensions" prompt (`.vscode/extensions.json`) to get
+  Java/Spring Boot, Angular, Docker, and YAML support for both `backend/`
+  and `frontend/` in one editor.
 
 ## Running the stack
 

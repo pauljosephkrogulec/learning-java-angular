@@ -3,7 +3,6 @@
 
 .DS_Store
 .idea/
-.vscode/
 *.iml
 
 # Secrets (introduced starting Module 10/12) - never commit real credentials.

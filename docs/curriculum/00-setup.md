@@ -10,9 +10,12 @@ via Docker, before writing any application code.
 - **Docker** (Docker Desktop on Mac/Windows, Docker Engine + Compose plugin on
   Linux) — required. Everything runs inside containers.
 - **JDK 21** and **Node.js LTS** — optional, but recommended so your editor
-  (IntelliJ IDEA for the backend, VS Code for the frontend) can give you
-  autocomplete and error-checking. You will not use these to *run* the app;
-  Docker handles that.
+  can give you autocomplete and error-checking. You will not use these to
+  *run* the app; Docker handles that.
+- **VS Code** — open the repo root folder and accept the "Install
+  recommended extensions" prompt (`.vscode/extensions.json`) to get
+  Java/Spring Boot, Angular, Docker, and YAML support for the whole repo in
+  one editor.
 
 ## Install checklist
 
@@ -27,7 +30,10 @@ via Docker, before writing any application code.
    java -version   # expect 21.x
    node -v          # expect a current LTS
    ```
-3. Clone this repo and run the whole stack from the repo root:
+3. Open the repo root folder in VS Code and click "Install" on the
+   "Install recommended extensions" prompt (or run **Extensions: Show
+   Recommended Extensions** from the command palette if you missed it).
+4. Clone this repo and run the whole stack from the repo root:
    ```
    docker compose up --build
    ```
@@ -55,12 +61,12 @@ update automatically — `ng serve` picks up saved file changes right away, no
 extra step needed.
 
 The backend is a bit different: Spring Boot DevTools only restarts the app
-when the compiled `.class` files change, not the raw `.java` source. If
-you're using an IDE like IntelliJ IDEA with "build project automatically"
-enabled, saving a `.java` file recompiles it immediately and DevTools picks
-it up. If you're editing with a plain text editor (or VS Code without that
-auto-build behavior), you need to trigger the recompile yourself after
-saving:
+when the compiled `.class` files change, not the raw `.java` source. VS
+Code with the recommended Java extensions (or IntelliJ IDEA with "build
+project automatically" enabled) recompiles a `.java` file as soon as you
+save it, and DevTools picks that up automatically. If you're editing with a
+plain text editor that doesn't compile on save, you need to trigger the
+recompile yourself after saving:
 
 ```
 docker compose exec backend ./mvnw -q compile -o
